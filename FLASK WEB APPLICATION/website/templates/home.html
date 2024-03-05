@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>This is the home page</h1>
+
+<!-- Add the course filtering form -->
+<form method="POST" action="{{ url_for('views.filter') }}">
+    <label for="language">Select Language:</label>
+    <select id="language" name="language">
+        <option value="Python">Python</option>
+        <option value="C">C</option>
+        <option value="C++">C++</option>
+        <option value="Java">Java</option>
+        <option value="Javascript">Javascript</option>
+        <!-- Add more language options as needed -->
+    </select>
+
+    <label for="framework">Select Framework:</label>
+    <select id="framework" name="framework">
+        <option value="Flask">Flask</option>
+        <option value="Django">Django</option>
+        <option value="React">React</option>
+        <option value="Node">Node</option>
+        <option value="Panda">Panda</option>
+        <!-- Add more framework options as needed -->
+    </select>
+
+    <label for="topic">Select Topic:</label>
+    <select id="topic" name="topic">
+        <option value="Web Development">Web Development</option>
+        <option value="Data Science">Data Science</option>
+        <option value="Game Developement">Game Developement</option>
+        <option value="Mobile Development">Mobile Developemt</option>
+        <option value="Network and Security">Network and Security</option>
+        <!-- Add more topic options as needed -->
+    </select>
+
+    <button type="submit" class="btn btn-primary">Filter Courses</button>
+</form>
+
+{% endblock %}

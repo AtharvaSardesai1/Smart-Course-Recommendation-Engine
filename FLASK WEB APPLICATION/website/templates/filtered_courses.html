@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <!-- Include Nexa-Bold font -->
+    <link href="https://fonts.cdnfonts.com/css/nexa-bold" rel="stylesheet">
+    <!-- Include Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Include your custom CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <!-- Box 1 - Logo -->
+            <div class="nav-logo border">
+                <div class="logo"></div>
+            </div>
+
+            <!-- Box 2 - Location -->
+            <div class="location border">
+                <p class="add-first">From</p>
+                <div class="add-icon">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <p class="add-second">India</p>
+                </div>
+            </div>
+
+            <!-- Box 3 - Search -->
+            <div class="nav-search">
+                <input placeholder="Search courses here.." class="search-input" id="keyword-search">
+                <div class="search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>    
+            </div>
+
+            <!-- Box 4 - About Project -->
+            <div class="log border">
+                <button class="about-btn" id="about-key">
+                    About Project
+                </button>
+            </div>
+
+            <!-- Box 5 - Logout -->
+            <div class="log border">
+                <a href="{{ url_for('auth.logout') }}" class="about-btn" id="Logout key">Logout</a>
+            </div>
+        </div>
+
+        <!-- Topics -->
+        <div class="topics">
+            <button class="button-value border">All</button>
+            <button class="button-value border">Web Development</button>
+            <button class="button-value border">Data Science</button>
+            <button class="button-value border">IT</button>
+            <button class="button-value border">Network and Security</button>
+            <button class="button-value border">Operating Systems</button>
+        </div>
+    </header>
+
+    <!-- Course-content -->
+    <div class="hero"></div>
+    <div class="content">
+        {% block content %}
+        <h1>Filtered Courses</h1>
+        <form action="/filter-courses" method="post">
+            <label for="filter_keyword">Filter by keyword:</label>
+            <input type="text" name="filter_keyword" id="filter_keyword">
+        
+            <label for="filter_price">Filter by price:</label>
+            <input type="number" name="filter_price" id="filter_price">
+        
+            <label for="filter_rating">Filter by rating:</label>
+            <input type="number" name="filter_rating" id="filter_rating" step="0.1">
+        
+            <!-- Correct the name attribute to match the one in views.py -->
+            
+            <label for="filter_selected_category">Search by category:</label>
+        <select name="filter_category" id="filter_selected_category">
+        <option value="">All</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Data Science">Data Science</option>
+        <option value="IT">IT</option>
+        <option value="Network and Security">Network and Security</option>
+        <option value="OS">OS</option>
+    </select>
+    
+        
+        
+            <button type="submit">Filter</button>
+        </form>
+        <!-- New filter by category -->
+        
+
+        <section class="products">
+            {% for product in products %}
+                <div class="box" data-category="{{ product.Category }}">
+                    <div class="head">
+                        <!-- Course Title -->
+                        <h2><a href="{{ product.Title_URL }}" target="_blank">{{ product.Title }}</a></h2>
+                        <!-- Rating -->
+                        <div class="rating">
+                            <i class="fa-solid fa-star"></i>
+                            {{ product.Rating }}
+                        </div>
+                    </div>
+                    
+                    <!-- Course Image -->
+                    <div class="img" style="background-image: url('{{ product.Image }}');" aria-label="{{ product.Title }}"></div>
+
+                    <!-- Course Details -->
+                    <div class="details">
+                        <!-- Category and Instructor -->
+                        <div class="category">Category: {{ product.Category }}</div>
+                        <div class="instructor">Instructor: {{ product.Instructor }}</div>
+                        <!-- About Course -->
+                        <div class="category">About Course: {{ product.About_Course }}</div>
+                        <!-- Price -->
+                        <div class="price">Rs. {{ product.Price }}</div>
+                        <!-- Duration -->
+                        <div class="duration">Duration of the Course: {{ product.Duration }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="finish">
+            <p>Conditions of use @2024</p>
+            <p>All rights reserved</p>
+        </div>
+    </footer>
+    <div class="pagination">
+        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button id="nextBtn" onclick="changePage(1)">Next</button>
+    </div>
+    
+    <script>
+        var currentPage = 1;
+        var coursesPerPage = 20;
+        var totalCourses = 100;  // Replace with the actual total number of courses
+    
+        function changePage(step) {
+            currentPage += step;
+            if (currentPage < 1) {
+                currentPage = 1;
+            } else if (currentPage > Math.ceil(totalCourses / coursesPerPage)) {
+                currentPage = Math.ceil(totalCourses / coursesPerPage);
+            }
+    
+            showCourses();
+        }
+    
+        function showCourses() {
+            var courses = document.querySelectorAll('.box');
+            var startIdx = (currentPage - 1) * coursesPerPage;
+            var endIdx = startIdx + coursesPerPage;
+    
+            courses.forEach(function (course, index) {
+                if (index >= startIdx && index < endIdx) {
+                    course.style.display = 'flex';
+                } else {
+                    course.style.display = 'none';
+                }
+            });
+    
+            // Hide/show center image based on the currentPage
+            var hero = document.querySelector('.hero');
+            hero.style.display = (currentPage === 1) ? 'block' : 'none';
+        }
+    
+        // Initial page load
+        showCourses();
+    </script>
+    
+
+</body>
+</html>
