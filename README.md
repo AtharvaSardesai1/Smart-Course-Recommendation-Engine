@@ -64,5 +64,6 @@ This project is licensed under the [MIT](https://choosealicense.com/licenses/mit
 
 ## Authors
 
-- [@idrisadeeb234](https://github.com/idrisadeeb234)
+- [@AtharvaSardesai1](https://github.com/idrisadeeb234)
+- [@idrisadeeb234](https://github.com/AtharvaSardesai1)
 
