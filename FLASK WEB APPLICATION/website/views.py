@@ -4,15 +4,21 @@ import pandas as pd
 
 views = Blueprint('views', __name__)
 
-csv_file_path = 'data/merged2.csv'
+csv_file_path = r"C:/Users/Atharva/Desktop/Smart-Course-Recommendation-Engine/FLASK WEB APPLICATION/data/merged2.csv"
 
 # Read data from the CSV file into a DataFrame
 df = pd.read_csv(csv_file_path)
+
 
 @views.route('/')
 @login_required
 def home():
     return render_template("home.html", user=current_user)
+
+@views.route('/recommendations')
+@login_required
+def recommendations():
+    return render_template("recommendation.html", user=current_user)
 
 @views.route('/filter-courses', methods=['POST', 'GET'])
 @login_required
