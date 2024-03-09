@@ -29,12 +29,15 @@
             </div>
 
             <!-- Box 3 - Search -->
-            <div class="nav-search">
-                <input placeholder="Search courses here.." class="search-input" id="keyword-search">
-                <div class="search-icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </div>    
-            </div>
+            <form action="/filter-courses" method="post">
+                <!-- Move the keyword input inside the search box -->
+                <div class="nav-search">
+                    <input placeholder="Search courses here.." class="search-input" id="keyword-search" name="filter_keyword">
+                    <div class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>    
+                </div>
+            </form>
 
             <!-- Box 4 - About Project -->
             <div class="log border">
@@ -47,17 +50,22 @@
             <div class="log border">
                 <a href="{{ url_for('auth.logout') }}" class="about-btn" id="Logout key">Logout</a>
             </div>
+
+        
         </div>
 
         <!-- Topics -->
-        <div class="topics">
-            <button class="button-value border">All</button>
-            <button class="button-value border">Web Development</button>
-            <button class="button-value border">Data Science</button>
-            <button class="button-value border">IT</button>
-            <button class="button-value border">Network and Security</button>
-            <button class="button-value border">Operating Systems</button>
-        </div>
+        <form action="/filter-courses" method="post">
+            <div class="topics">
+                <button class="button-value border" name="filter_category" value="">All</button>
+                <button class="button-value border" name="filter_category" value="Web Development">Web Development</button>
+                <button class="button-value border" name="filter_category" value="Data Science">Data Science</button>
+                <button class="button-value border" name="filter_category" value="IT">IT</button>
+                <button class="button-value border" name="filter_category" value="Network and Security">Network and Security</button>
+                <button class="button-value border" name="filter_category" value="OS">OS</button>
+            </div>
+            <button type="submit">Filter</button>
+        </form>
     </header>
 
     <!-- Course-content -->
@@ -66,8 +74,7 @@
         {% block content %}
         <h1>Filtered Courses</h1>
         <form action="/filter-courses" method="post">
-            <label for="filter_keyword">Filter by keyword:</label>
-            <input type="text" name="filter_keyword" id="filter_keyword">
+            <!-- Move the keyword input inside the search box -->
         
             <label for="filter_price">Filter by price:</label>
             <input type="number" name="filter_price" id="filter_price">
@@ -76,22 +83,11 @@
             <input type="number" name="filter_rating" id="filter_rating" step="0.1">
         
             <!-- Correct the name attribute to match the one in views.py -->
-            
-            <label for="filter_selected_category">Search by category:</label>
-        <select name="filter_category" id="filter_selected_category">
-        <option value="">All</option>
-        <option value="Web Development">Web Development</option>
-        <option value="Data Science">Data Science</option>
-        <option value="IT">IT</option>
-        <option value="Network and Security">Network and Security</option>
-        <option value="OS">OS</option>
-    </select>
-    
-        
         
             <button type="submit">Filter</button>
         </form>
         <!-- New filter by category -->
+
         
 
         <section class="products">
@@ -105,6 +101,7 @@
                             <i class="fa-solid fa-star"></i>
                             {{ product.Rating }}
                         </div>
+                        <button class="favorite-btn" onclick="toggleFavorite('{{ product.Title }}')">Add to Favorites</button>
                     </div>
                     
                     <!-- Course Image -->
@@ -113,14 +110,14 @@
                     <!-- Course Details -->
                     <div class="details">
                         <!-- Category and Instructor -->
-                        <div class="category">CATEGORY: {{ product.Category }}</div>
-                        <div class="instructor">INSTRUCTOR: {{ product.Instructor }}</div>
+                        <div class="category">Category: {{ product.Category }}</div>
+                        <div class="instructor">Instructor: {{ product.Instructor }}</div>
                         <!-- About Course -->
-                        <div class="category">ABOUT COURSE: {{ product.About_Course }}</div>
+                        <div class="category">About Course: {{ product.About_Course }}</div>
                         <!-- Price -->
-                        <div class="price">PRICE : Rs. {{ product.Price }}</div>
+                        <div class="price">Rs. {{ product.Price }}</div>
                         <!-- Duration -->
-                        <div class="duration">DURATION: {{ product.Duration }}</div>
+                        <div class="duration">Duration of the Course: {{ product.Duration }}</div>
                     </div>
                 </div>
             {% endfor %}
@@ -128,11 +125,6 @@
         {% endblock %}
     </div>
 
-    <div class="pagination">
-        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
-        <button id="nextBtn" onclick="changePage(1)">Next</button>
-    </div>
-    
     <!-- Footer -->
     <footer>
         <div class="finish">
@@ -140,7 +132,10 @@
             <p>All rights reserved</p>
         </div>
     </footer>
-    
+    <div class="pagination">
+        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button id="nextBtn" onclick="changePage(1)">Next</button>
+    </div>
     
     <script>
         var currentPage = 1;
@@ -178,6 +173,26 @@
     
         // Initial page load
         showCourses();
+
+        function toggleFavorite(courseTitle) {
+        // Send an AJAX request to update the favorite status
+        fetch(`/toggle-favorite/${courseTitle}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);  // Display the response message (you can customize this)
+                showCourses();  // Update the UI
+                window.location.href = '/favorites';  // Navigate to the favorites page
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Function to display favorite courses
+        function showFavorites() {
+        // Fetch and display favorite courses (you may need to send a request to your backend)
+        // Update the "favorites" section in the HTML
+        var favoritesSection = document.querySelector('.favorites');
+        // Add your logic to display favorite courses here
+    }
     </script>
     
 
