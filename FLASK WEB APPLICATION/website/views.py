@@ -15,11 +15,6 @@ df = pd.read_csv(csv_file_path)
 def home():
     return render_template("home.html", user=current_user)
 
-@views.route('/recommendations')
-@login_required
-def recommendations():
-    return render_template("recommendation.html", user=current_user)
-
 @views.route('/filter-courses', methods=['POST', 'GET'])
 @login_required
 def filter():

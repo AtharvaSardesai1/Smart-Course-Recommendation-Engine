@@ -150,7 +150,7 @@
 .box {
     border: 2px solid rgb(93, 133, 198);
     border-radius: 5px;
-    height: 400px;
+    height: 550px;
     background-color: #edf5e1;
     width: calc(20% - 30px); /* 20% width for each box with 30px margin between them */
     margin: 15px;
@@ -174,9 +174,10 @@
 
 .img {
     background-size: cover;
-    height: 250px;
-    width: 100%;
+    height: 200px;
+    width: 80%;
     margin-bottom: 10px;
+    margin-left: 20px;
 }
 
 .details {

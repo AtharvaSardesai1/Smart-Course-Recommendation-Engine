@@ -113,14 +113,14 @@
                     <!-- Course Details -->
                     <div class="details">
                         <!-- Category and Instructor -->
-                        <div class="category">Category: {{ product.Category }}</div>
-                        <div class="instructor">Instructor: {{ product.Instructor }}</div>
+                        <div class="category">CATEGORY: {{ product.Category }}</div>
+                        <div class="instructor">INSTRUCTOR: {{ product.Instructor }}</div>
                         <!-- About Course -->
-                        <div class="category">About Course: {{ product.About_Course }}</div>
+                        <div class="category">ABOUT COURSE: {{ product.About_Course }}</div>
                         <!-- Price -->
-                        <div class="price">Rs. {{ product.Price }}</div>
+                        <div class="price">PRICE : Rs. {{ product.Price }}</div>
                         <!-- Duration -->
-                        <div class="duration">Duration of the Course: {{ product.Duration }}</div>
+                        <div class="duration">DURATION: {{ product.Duration }}</div>
                     </div>
                 </div>
             {% endfor %}
@@ -128,6 +128,11 @@
         {% endblock %}
     </div>
 
+    <div class="pagination">
+        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button id="nextBtn" onclick="changePage(1)">Next</button>
+    </div>
+    
     <!-- Footer -->
     <footer>
         <div class="finish">
@@ -135,10 +140,7 @@
             <p>All rights reserved</p>
         </div>
     </footer>
-    <div class="pagination">
-        <button id="prevBtn" onclick="changePage(-1)">Previous</button>
-        <button id="nextBtn" onclick="changePage(1)">Next</button>
-    </div>
+    
     
     <script>
         var currentPage = 1;
